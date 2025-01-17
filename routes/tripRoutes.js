@@ -1,5 +1,7 @@
 const express = require('express');
 
+const { protectRoute, restrictTo } = require('../controllers/authController');
+
 const {
   getAllTrips,
   getTrip,
@@ -21,8 +23,12 @@ router.route('/monthly-plan/:year').get(getMonthlyPlan);
 
 router.route('/');
 
-router.route('/').get(getAllTrips).post(createTrip);
+router.route('/').get(protectRoute, getAllTrips).post(createTrip);
 
-router.route('/:id').get(getTrip).patch(updateTrip).delete(deleteTrip);
+router
+  .route('/:id')
+  .get(getTrip)
+  .patch(updateTrip)
+  .delete(protectRoute, restrictTo('admin', 'lead-guide'), deleteTrip);
 
 module.exports = router;
