@@ -31,3 +31,10 @@ jsonwebtoken - for generating and verifying tokens on sign in and login
 bcryptjs - for encryption the password before sending to Database
 crypto - encryting the password reset token
 nodemailer - to send email to the user
+
+Security:
+express-rate-limit - for limiting the number of requests from an single IP address
+helmet - to set important http headers
+express-mongo-sanitize - to sanitize the incoming request body to avoid queries to DB
+xss-clean - to sanitize the incoming html code in request body
+hpp - http parameter pollution, to clear the query string in req url, avoiding duplicates
