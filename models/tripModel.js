@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose').set('debug', true);
 const slugify = require('slugify');
+// const User = require('./userModel');
 
 const tripSchema = new mongoose.Schema(
   {
@@ -31,6 +32,7 @@ const tripSchema = new mongoose.Schema(
       default: 4.5,
       min: [0, 'Rating must be above 0'],
       max: [5, 'rating must be below 5'],
+      set: (val) => Math.round(val * 10) / 10,
     },
     price: {
       type: Number,
@@ -65,18 +67,59 @@ const tripSchema = new mongoose.Schema(
     startDates: [Date],
     secretTrip: { type: Boolean, default: false },
     slug: String,
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
+tripSchema.index({ price: 1, ratingsAverage: -1 });
+tripSchema.index({ slug: 1 });
+
 tripSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
+});
+
+// virtual populate
+tripSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'trip',
+  localField: '_id',
 });
 
 tripSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+// tripSchema.pre('save', async function (next) {
+//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 // Query middleware
 tripSchema.pre(/^find/, function (next) {
@@ -85,9 +128,16 @@ tripSchema.pre(/^find/, function (next) {
   next();
 });
 
+tripSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
+});
+
 tripSchema.post(/^find/, function (docs, next) {
   console.log('took', Date.now() - this.start);
-
   next();
 });
 

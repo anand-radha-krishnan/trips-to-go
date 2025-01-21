@@ -38,3 +38,6 @@ helmet - to set important http headers
 express-mongo-sanitize - to sanitize the incoming request body to avoid queries to DB
 xss-clean - to sanitize the incoming html code in request body
 hpp - http parameter pollution, to clear the query string in req url, avoiding duplicates
+
+Additional tools:
+Mailtrap - for recieving mails from node application

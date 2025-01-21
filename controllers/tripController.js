@@ -1,7 +1,6 @@
 const Trip = require('../models/tripModel');
-const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+const factory = require('./handlerFactory');
 
 exports.aliasTopTrips = (req, res, next) => {
   req.query.limit = '5';
@@ -10,59 +9,11 @@ exports.aliasTopTrips = (req, res, next) => {
   next();
 };
 
-exports.getAllTrips = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Trip.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .pagination();
-
-  const trips = await features.query;
-
-  res
-    .status(200)
-    .json({ status: 'success', results: trips.length, data: { trips } });
-});
-
-exports.getTrip = catchAsync(async (req, res, next) => {
-  const trip = await Trip.findById(req.params.id);
-
-  if (!trip) {
-    return next(new AppError(404, `No tour found with that Id`));
-  }
-  res.status(200).json({ status: 'success', data: { trip } });
-});
-
-exports.createTrip = catchAsync(async (req, res, next) => {
-  const newTrip = await Trip.create(req.body);
-  res.status(201).json({
-    status: 'success',
-    data: { newTrip },
-  });
-});
-
-exports.updateTrip = catchAsync(async (req, res, next) => {
-  const trip = await Trip.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!trip) {
-    return next(new AppError(404, `No tour found with that Id`));
-  }
-  res.status(200).json({ status: 'success', data: { trip } });
-});
-
-exports.deleteTrip = catchAsync(async (req, res, next) => {
-  const trip = await Trip.findByIdAndDelete(req.params.id);
-  if (!trip) {
-    return next(new AppError(404, `No tour found with that Id`));
-  }
-
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
-});
+exports.getAllTrips = factory.getAll(Trip);
+exports.getTrip = factory.getOne(Trip, { path: 'reviews' });
+exports.createTrip = factory.createOne(Trip);
+exports.updateTrip = factory.updateOne(Trip);
+exports.deleteTrip = factory.deleteOne(Trip);
 
 exports.getTripStats = catchAsync(async (req, res, next) => {
   const stats = await Trip.aggregate([

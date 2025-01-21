@@ -12,23 +12,29 @@ const {
   getTripStats,
   getMonthlyPlan,
 } = require('../controllers/tripController');
+const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
+
+router.use('/:tripId/reviews', reviewRouter);
 
 router.route('/top-5-cheap').get(aliasTopTrips, getAllTrips);
 
 router.route('/trip-stats').get(getTripStats);
 
-router.route('/monthly-plan/:year').get(getMonthlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(restrictTo('admin', 'guide', 'lead-guide'), getMonthlyPlan);
 
-router.route('/');
-
-router.route('/').get(protectRoute, getAllTrips).post(createTrip);
+router
+  .route('/')
+  .get(getAllTrips)
+  .post(protectRoute, restrictTo('admin', 'lead-guide'), createTrip);
 
 router
   .route('/:id')
   .get(getTrip)
-  .patch(updateTrip)
+  .patch(protectRoute, restrictTo('admin', 'lead-guide'), updateTrip)
   .delete(protectRoute, restrictTo('admin', 'lead-guide'), deleteTrip);
 
 module.exports = router;
