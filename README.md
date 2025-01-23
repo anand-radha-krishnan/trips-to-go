@@ -49,3 +49,4 @@ parcel-bunlder - to bundle js
 axios - for fetching from backend endpoints
 cookie-parser - url encoder
 multer - handle multi part form data, upload files in form
+sharp - Image processing libray for Node

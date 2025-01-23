@@ -22,7 +22,8 @@ const {
 const {
   updateMe,
   deleteMe,
-  uploadUserPhoto,
+  uploadUserImage,
+  resizeUserImage,
 } = require('../controllers/userController');
 
 const router = express.Router();
@@ -39,7 +40,7 @@ router.use(protectRoute);
 router.patch('/update-password', updatePassword);
 
 router.get('/get-me', getMe, getUser);
-router.patch('/update-me', uploadUserPhoto, updateMe);
+router.patch('/update-me', uploadUserImage, resizeUserImage, updateMe);
 router.delete('/delete-me', deleteMe);
 
 // all routes after here can be done only by admins

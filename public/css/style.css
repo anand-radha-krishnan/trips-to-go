@@ -1273,7 +1273,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.form__photo-upload {
+.form__image-upload {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1283,7 +1283,7 @@ body {
   font-size: 1.6rem;
 }
 
-.form__user-photo {
+.form__user-image {
   height: 7.5rem;
   width: 7.5rem;
   border-radius: 50%;
