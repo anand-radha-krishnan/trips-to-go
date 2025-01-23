@@ -98,6 +98,7 @@ const tripSchema = new mongoose.Schema(
 
 tripSchema.index({ price: 1, ratingsAverage: -1 });
 tripSchema.index({ slug: 1 });
+tripSchema.index({ startLocation: '2dsphere' });
 
 tripSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
@@ -142,11 +143,10 @@ tripSchema.post(/^find/, function (docs, next) {
 });
 
 // Aggregation middleware
-tripSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { secretTrip: { $ne: true } } });
-
-  next();
-});
+// tripSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({ $match: { secretTrip: { $ne: true } } });
+//   next();
+// });
 
 const Trip = mongoose.model('Trip', tripSchema);
 

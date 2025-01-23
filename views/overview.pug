@@ -1,0 +1,47 @@
+extends base
+
+block content
+	main.main
+		.card-container
+    
+			each trip of trips
+				.card
+					.card__header
+						.card__picture
+							.card__picture-overlay &nbsp;
+							img.card__picture-img(src=`/img/tours/${trip.imageCover}`, alt=`${trip.name}`)
+						h3.heading-tertirary
+							span= trip.name
+
+					.card__details
+						h4.card__sub-heading= `${trip.difficulty} ${trip.duration}-day trip`
+						p.card__text= trip.summary
+						.card__data
+							svg.card__icon
+								use(xlink:href='/img/icons.svg#icon-map-pin')
+							span= trip.startLocation.description
+						.card__data
+							svg.card__icon
+								use(xlink:href='/img/icons.svg#icon-calendar')
+							span= trip.startDates[0].toLocaleString('en-US', {month: 'long', year: 'numeric'})
+						.card__data
+							svg.card__icon
+								use(xlink:href='/img/icons.svg#icon-flag')
+							span= `${trip.locations.length} stops`
+						.card__data
+							svg.card__icon
+								use(xlink:href='/img/icons.svg#icon-user')
+							span= `${trip.maxGroupSize} people`
+
+					.card__footer
+						p
+							span.card__footer-value= `$${trip.price}`
+							| 
+							span.card__footer-text per person
+						p.card__ratings
+							span.card__footer-value= trip.ratingsAverage
+							| 
+							span.card__footer-text= `rating (${trip.ratingsQuantity})`
+						a.btn.btn--green.btn--small(href=`/trips/${trip.slug}`) Details
+					
+						

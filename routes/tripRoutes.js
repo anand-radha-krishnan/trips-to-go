@@ -11,6 +11,8 @@ const {
   aliasTopTrips,
   getTripStats,
   getMonthlyPlan,
+  getToursWithin,
+  getDisctances,
 } = require('../controllers/tripController');
 const reviewRouter = require('./reviewRoutes');
 
@@ -25,6 +27,12 @@ router.route('/trip-stats').get(getTripStats);
 router
   .route('/monthly-plan/:year')
   .get(restrictTo('admin', 'guide', 'lead-guide'), getMonthlyPlan);
+
+router
+  .route('/trips-within/:distance/center/:latlong/unit/:unit')
+  .get(getToursWithin);
+
+router.route('/distances/:latlong/unit/:unit').get(getDisctances);
 
 router
   .route('/')

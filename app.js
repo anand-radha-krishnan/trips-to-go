@@ -1,22 +1,33 @@
+'use strict';
+
 const express = require('express');
+const path = require('path');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const tripRouter = require('./routes/tripRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 const errorHandler = require('./controllers/errorController');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// serving static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // global middleware
 // set security http request
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // dev logging
 if (process.env.NODE_ENV === 'development') {
@@ -38,6 +49,10 @@ app.use(
   }),
 );
 
+app.use(cookieParser());
+
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
 // data sanitization against NOSQL query injection
 app.use(mongoSanitize());
 
@@ -58,14 +73,15 @@ app.use(
   }),
 );
 
-// serving static files
-app.use(express.static(`${__dirname}/public`));
-
 // test middlewaare
 app.use((req, res, next) => {
   next();
 });
 
+// Routes
+app.use('/', viewRouter);
+
+// API routes
 app.use('/api/v1/trips', tripRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
