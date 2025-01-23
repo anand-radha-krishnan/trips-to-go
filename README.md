@@ -45,8 +45,12 @@ Mailtrap - for recieving mails from node application
 Pug - template engine for html in node.js for rendering page
 Maptiler - to display map in frontend
 dotenv
-parcel-bunlder - to bundle js
+Webpack - to bundle js
 axios - for fetching from backend endpoints
 cookie-parser - url encoder
 multer - handle multi part form data, upload files in form
 sharp - Image processing libray for Node
+html-to-text - to convert html to text to send in email
+stripe - for payments
+compression - compress files to send to client
+Heroku - for deployment

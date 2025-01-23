@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const compression = require('compression');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
@@ -13,6 +14,7 @@ const tripRouter = require('./routes/tripRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const errorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -71,6 +73,8 @@ app.use(
   }),
 );
 
+app.use(compression());
+
 // test middlewaare
 app.use((req, res, next) => {
   next();
@@ -83,6 +87,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/trips', tripRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/booking', bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(404, `Can't find ${req.originalUrl}`));
