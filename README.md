@@ -75,7 +75,22 @@ npm install
 ```
 
 ```bash {"id":"01J87GXRV8DR630E7P4J99K6DD"}
-npm run dev
+npm run dev:server
 ```
 
 Open http://localhost:3000 with your browser to see the result.
+
+
+## Product List Page (PLP)
+<img width="1788" alt="image" src="https://github.com/user-attachments/assets/5b93e2eb-9e76-4f12-99b1-877746819f08" />
+
+## Product Details Page (PDP)
+<img width="1788" alt="image" src="https://github.com/user-attachments/assets/e11a308b-29df-4cf5-9bd3-152be4e471ee" />
+<img width="1788" alt="image" src="https://github.com/user-attachments/assets/8a9f6229-8e04-47dd-9356-ec8ba89c6539" />
+
+## Login Page
+<img width="1788" alt="image" src="https://github.com/user-attachments/assets/7179d53d-3835-4948-b9b6-ce57b8509bd2" />
+
+## Profile Page
+<img width="1788" alt="image" src="https://github.com/user-attachments/assets/691507d7-901e-4f3e-bf48-bd801f72e430" />
+
