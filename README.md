@@ -1,4 +1,4 @@
-# [**Trips to go**](http://trips-to-go.vercel.app/)
+# **Trips to go**
 
 ## Stack
 
@@ -81,6 +81,9 @@ npm run dev:server
 ```
 
 Open http://localhost:3000 with your browser to see the result.
+
+
+## Visit the portal --> [**Trips to go**](http://trips-to-go.vercel.app/)
 
 
 ## Product List Page (PLP)
