@@ -1,4 +1,4 @@
-# [**Trips to go**](trip-to-go.vercel.app)
+# [**Trips to go**](http://trips-to-go.vercel.app/)
 
 ## Stack
 
