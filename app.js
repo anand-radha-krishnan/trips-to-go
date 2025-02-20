@@ -18,6 +18,8 @@ const bookingRouter = require('./routes/bookingRoutes');
 const errorHandler = require('./controllers/errorController');
 
 const app = express();
+// Trust proxy
+app.enable('trust proxy');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
