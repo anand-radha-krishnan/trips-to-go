@@ -18,8 +18,6 @@ const bookingRouter = require('./routes/bookingRoutes');
 const errorHandler = require('./controllers/errorController');
 
 const app = express();
-// Trust proxy
-app.enable('trust proxy', 1);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -41,8 +39,6 @@ const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from the IP, please try again later',
-  standardHeaders: true,
-  legacyHeaders: false,
 });
 app.use('/api', limiter);
 
